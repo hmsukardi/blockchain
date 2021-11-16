@@ -101,3 +101,13 @@ def mine_block():
     nonce = blockchain.proof_of_work(index, last_block_hash, blockchain.current_transaction)
 
     block = blockchain.append_block(nonce, last_block_hash)
+
+    response = {
+        'message': "Block baru telah ditambahkan (mined)",
+        'index': block['index'],
+        'hash_of_previous_block': block['hash_of_previous_block'],
+        'nonce': block['nonce'],
+        'transaction': block['transaction']
+    }
+
+    return jsonify(response), 200
