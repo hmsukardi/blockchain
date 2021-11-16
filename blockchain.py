@@ -87,3 +87,17 @@ def full_chain():
 
     return jsonify(response), 200
 
+@app.route('/mine', method=['GET'])
+def mine_block():
+    blockchain.add_transaction(
+        sender="0",
+        recepient=node_identifier,
+        amount=1
+    )
+
+    last_block_hash = blockchain.hash_block(blockchain.last_block)
+
+    index = len(blockchain.chain)
+    nonce = blockchain.proof_of_work(index, last_block_hash, blockchain.current_transaction)
+
+    block = blockchain.append_block(nonce, last_block_hash)
