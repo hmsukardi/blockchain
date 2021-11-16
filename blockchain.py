@@ -31,16 +31,27 @@ class Blockchain(object):
             nonce = self.proof_of_work(0, genesis_hash, [])
         )
 
-    def proof_of_work(self, index, hash_of_proof_of_work, transaction, nonce):
+    def proof_of_work(self, index, hash_of_previous_block, transaction, nonce):
         nonce = 0
 
-        while self.valid_proof(index, hash_of_proof_of_work, transaction, nonce) is False:
+        while self.valid_proof(index, hash_of_previous_block, transaction, nonce) is False:
             nonce += 1
         return nonce
         
-    def valid_proof(self, index, hash_of_proof_of_work, transaction, nonce):
-        content = f'{index}{hash_of_proof_of_work}{transaction}{nonce}'.encode()
+    def valid_proof(self, index, hash_of_previous_block, transaction, nonce):
+        content = f'{index}{hash_of_previous_block}{transaction}{nonce}'.encode()
 
         content_hash = hashlib.sha256(content).hexdigest()
 
         return content_hash[:len(self.difficulty_target)] == self.difficulty_target
+
+    def append_block(self, nonce, hash_of_previous_block):
+        block = {
+            'index' : len(self.chain),
+            'timestamp' : time(),
+            'transaction' : self.current_transaction,
+            'nonce' : nonce,
+            'hash_of_previous_block' : hash_of_previous_block
+        }
+
+        self.current_transaction = []
