@@ -38,3 +38,9 @@ class Blockchain(object):
             nonce += 1
         return nonce
         
+    def valid_proof(self, index, hash_of_proof_of_work, transaction, nonce):
+        content = f'{index}{hash_of_proof_of_work}{transaction}{nonce}'.encode()
+
+        content_hash = hashlib.sha256(content).hexdigest()
+
+        return content_hash[:len(self.difficulty_target)] == self.difficulty_target
