@@ -55,3 +55,14 @@ class Blockchain(object):
         }
 
         self.current_transaction = []
+
+        self.chain.append(block)
+        return block
+
+    def add_transaction(self, sender, recepient, amount):
+        self.current_transaction.append({
+            'amount': amount,
+            'recepient': recepient,
+            'sender': sender
+        })
+        return self.last_block['index'] + 1
