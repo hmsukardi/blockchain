@@ -71,4 +71,8 @@ class Blockchain(object):
     def last_block(self):
         return self.chain[-1]
 
-        
+app = Flask(__name__)
+
+node_identifier = str(uuid4()).replace('-', "")
+
+blockchain = Blockchain()
